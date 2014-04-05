@@ -1,0 +1,51 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:		envi
+# Required-Start:	$remote_fs $syslog
+# Required-Stop:	$remote_fs $syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:
+# Short-Description:	Current Cost Envi power usage and temperature logger
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+run_start() {
+      # Test to see if the cache directory exists
+      if [ ! -d /var/cache/envi ]; then
+        mkdir -p /var/cache/envi
+      fi
+
+      log_daemon_msg "Starting Envi Current Cost Reader" "envi.pl" || true
+      if start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile /var/run/envi.pid --exec /opt/envi/envi.pl -- ; then
+         log_end_msg 0 || true
+      else
+         log_end_msg 1 || true
+      fi
+}
+
+run_stop() {
+        log_daemon_msg "Stopping Envi Current Cost Reader" "envi.pl" || true
+        if start-stop-daemon --stop --quiet --oknodo --retry 2 --pidfile /var/run/envi.pid; then
+            log_end_msg 0 || true
+        else
+            log_end_msg 1 || true
+        fi
+}
+
+case "$1" in
+  start)
+      run_start
+      ;;
+  stop)
+      run_stop
+      ;;
+  restart)
+      run_stop
+      run_start
+      ;;
+  *)
+      log_action_msg "Usage: /etc/init.d/envi {start|stop|restart|status}" || true
+      exit 1
+esac
