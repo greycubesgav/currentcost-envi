@@ -24,6 +24,11 @@ chmod +x /opt/envi
 /etc/init.d/envi start
 ```
 
+```Shell
+cat /var/cache/envi/watts.val
+cat /var/cache/envi/temp.val
+```
+
 ## Notes ##
 The variables holding the location of the tty and output files are at the top of the perl script for easy changing. 
 
