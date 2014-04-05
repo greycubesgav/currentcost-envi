@@ -2,7 +2,7 @@
 ================
 
 ## Introduction ##
-Simple application to read the current wattage and temperature from a Current Cost envi device.
+Simple application to read the current wattage and temperature from a Current Cost Envi power monitoring device (http://www.currentcost.com/product-envi.html).
 
 The script connects to /dev/ttyUSB0 and starts reading. If it detects a power usage update string it extracts the Wattage and the Temperatue and writes them to a watts.val and temp.val file respectively within '/var/cache/envi'.
 
